@@ -1,0 +1,63 @@
+<#@ assembly name="System.Windows.Forms" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+
+<#
+    int incBuild = 1;
+	int incIndex = 1;
+
+    try {
+        string currentDirectory = Path.GetDirectoryName(Host.TemplateFile);
+        string assemblyInfo = File.ReadAllText(Path.Combine(currentDirectory,"AssemblyInfo.cs"));
+        Regex pattern = new Regex("AssemblyFileVersion\\(\"\\d+\\.\\d+\\.(?<revision>\\d+)\\.(?<build>\\d+)\"\\)");
+        MatchCollection matches = pattern.Matches(assemblyInfo);
+		incBuild = Convert.ToInt32(matches[0].Groups["build"].Value);
+		int build2 = System.Convert.ToInt32(string.Format("{0}{1}", System.DateTime.Now.Month.ToString(), System.DateTime.Now.Day.ToString()));
+        if (incBuild.ToString().Trim().StartsWith(build2.ToString().Trim()))
+        {
+           incIndex = System.Convert.ToInt32(incBuild.ToString().Trim().Replace(build2.ToString().Trim(), "")) + 1;
+        }
+        build = System.Convert.ToInt32(string.Format("{0}{1}{2}", System.DateTime.Now.Month.ToString(), System.DateTime.Now.Day.ToString(), incIndex.ToString()));
+    }
+    catch( Exception ) { }
+#>
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Resources;
+
+// General Information about an assembly is controlled through the following
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("<#= this.title #>")]
+[assembly: AssemblyDescription("<#= this.description #>")]
+[assembly: AssemblyConfiguration("<#= this.configuration #>")]
+[assembly: AssemblyCompany("<#= this.company #>")]
+[assembly: AssemblyProduct("<#= this.product #>")]
+[assembly: AssemblyCopyright("<#= this.copyright #> <#= this.year #>")]
+[assembly: AssemblyTrademark("<#= this.trademark #>")]
+[assembly: AssemblyCulture("")]
+
+// Setting ComVisible to false makes the types in this assembly not visible
+// to COM components.  If you need to access a type in this assembly from
+// COM, set the ComVisible attribute to true on that type. Only Windows
+// assemblies support COM.
+[assembly: ComVisible(false)]
+
+// On Windows, the following GUID is for the ID of the typelib if this
+// project is exposed to COM. On other platforms, it unique identifies the
+// title storage container when deploying this assembly to the device.
+[assembly: Guid("<#= this.guid #>")]
+
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("<#= Resources._CurrentVersion #>")]
+[assembly: AssemblyFileVersion("<#= String.Format(Resources._CurrentFileVersion,this.build) #>")]

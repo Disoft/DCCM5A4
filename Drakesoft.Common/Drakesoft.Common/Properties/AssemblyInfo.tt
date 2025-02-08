@@ -1,0 +1,21 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Windows.Forms" #>
+<#@ assembly name="Drakesoft.Resources.dll" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="Drakesoft.Resources" #>
+<#@ include file="Templates\AssemblyTemplate.t4" #>
+<#+
+	//RESOURCES
+	string title = Resources.Common_Common_Title;
+	string description = Resources.Common_Common_Description;
+	string company = Resources._CurrentCompany;
+	string configuration = Resources.Common_Common_Configuration;
+	string copyright = Resources._CurrentCopyright;
+	string product = Resources.Common_Common_Product;
+	string trademark = "";
+	string guid = Resources.Common_Common_Guid;
+	string year = System.DateTime.Now.Year.ToString();
+    int build = 0;
+#>
